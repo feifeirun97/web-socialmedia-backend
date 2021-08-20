@@ -46,3 +46,25 @@ await User.findByIdAndUpdate(userUnfollow,
       )
 ```
 
+**难点**
+
+```js
+router.get("/timeline/all", async (req, res) => {
+  const userId = req.body.userId
+  try {
+    const currentUser = await User.findById(userId)
+    const userPosts = await Post.find({ userId: userId })
+    const friendPosts = await Promise.all(
+      currentUser.followings.map((friendId) => {
+        return Post.find({ userId: friendId })
+      })
+    )
+    //...可以吧列表外壳去掉
+    res.status(200).json(userPosts.concat(...friendPosts))
+
+  } catch (err) {
+    res.status(500).json("err: " + err)
+  }
+})
+```
+
