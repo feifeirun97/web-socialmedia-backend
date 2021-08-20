@@ -5,6 +5,8 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const userRoute = require("./routers/users")
 const authRoute = require("./routers/auth")
+const postRoute = require("./routers/posts")
+
 //链接Process.env
 dotenv.config();
 
@@ -17,12 +19,15 @@ mongoose.connect(
 
 //Express
 const app = express()
-app.use(express.json())           //middleware parser
-app.use(helmet())                 //helmet安全链接
-app.use(morgan('common'))         //morgan可以展示req具体细节,最后一个数字是duration
+app.use(express.json())            //middleware parser
+app.use(helmet())                  //helmet安全链接
+app.use(morgan('common'))          //morgan可以展示req具体细节,最后一个数字是duration
 
 app.use("/api/users", userRoute)   //用户查删改
-app.use("/api/auth", authRoute)   //注册登陆验证
+app.use("/api/auth", authRoute)    //注册登陆验证
+app.use("/api/post", postRoute)    //注册登陆验证
+
+
 
 port = process.env.PORT || 4000
 

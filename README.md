@@ -11,5 +11,38 @@ npm init
 yarn add express mongoose dotenv helmet morgan nodemon bcrypt
 ```
 
-# 思路
+# 安全
+
++ 存在数据库的密码为hash
+
+  ```js
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(password, salt)
+  ```
+
++ API返回不包括密码
+
+  ```js
+  const user = await User.findById(id)
+  const {password,updatedAt,...other} = user._doc
+  res.status(200).json(other)
+  ```
+
+# 知识点
+
++ 对于CRUD，后端不需要考虑id是否存在，需要在前端就规避这种情
+
+# Mongoose
+
+```js
+//更新全部
+await User.findByIdAndUpdate(id, { $set: req.body })
+//更新某列表
+await User.findByIdAndUpdate(userFollow, 
+        {$push:{followers:userCurrent}}
+      )
+await User.findByIdAndUpdate(userUnfollow, 
+        {$pull:{followers:userCurrent}}
+      )
+```
 
